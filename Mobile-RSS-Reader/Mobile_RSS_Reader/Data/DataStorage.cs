@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Threading.Tasks;
@@ -82,6 +83,19 @@ namespace Mobile_RSS_Reader.Data
         }
 
         /// <summary>
+        /// Saves object async.
+        /// </summary>
+        /// <param name="obj">Object for saving</param>
+        /// <param name="keyFunc">Key func</param>
+        /// <param name="ctx">Cancelation token</param>
+        /// <returns>Task</returns>
+        private Task<string> SaveObjectAsync<T>(T obj, Func<string, string> keyFunc, CancellationToken ctx)
+            where T : BaseModel
+        {
+            return SaveObjectAsync(keyFunc(obj.Id), obj, ctx);
+        }
+
+        /// <summary>
         /// Prived feed key for given id.
         /// </summary>
         /// <param name="id">Item id</param>
@@ -98,6 +112,17 @@ namespace Mobile_RSS_Reader.Data
         }
 
         /// <summary>
+        /// Removes feeds async by id.
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="ctx">Cancelation token</param>
+        /// <returns></returns>
+        public async Task DeleteFeedAsync(string id, CancellationToken ctx)
+        {
+            await _cache.InvalidateObject<Feed>(FeedId2Key(id)).ToTask(ctx);
+        }
+
+        /// <summary>
         /// Save given list of feeds to storage.
         /// </summary>
         /// <param name="feeds">Feeds for saving</param>
@@ -106,6 +131,51 @@ namespace Mobile_RSS_Reader.Data
         public Task<IEnumerable<string>> SaveFeedsAsync(IReadOnlyList<Feed> feeds, CancellationToken ctx)
         {
             return SaveAllObjectsAsync(feeds, FeedId2Key, ctx);
+        }
+
+        /// <summary>
+        /// Provides key for feed acrticle.
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>Key</returns>
+        private static string ArticleId2Key(string id) => "Article:" + id;
+
+        public IObservable<IEnumerable<FeedArticle>> GetAllFeedArticles()
+        {
+            return GetObservableFromCache(cache => cache.GetAllObjects<FeedArticle>());
+        }
+
+        /// <summary>
+        /// Removes feed article by key
+        /// </summary>
+        /// <param name="id">Id for remove</param>
+        /// <param name="ctx">Cancelation token</param>
+        /// <returns>Task</returns>
+        public async Task DeleteFeedArticleAsync(string id, CancellationToken ctx)
+        {
+            await _cache.InvalidateObject<FeedArticle>(ArticleId2Key(id)).ToTask(ctx);
+        }
+
+        /// <summary>
+        /// Provides all saved in storage feeds.
+        /// </summary>
+        /// <returns>List of stored feeds</returns>
+        public IObservable<FeedArticle> GetFeedArticle(string id)
+        {
+            return
+                GetObservableFromCache(cache => cache.GetObject<FeedArticle>(ArticleId2Key(id)))
+                    .Catch(Observable.Return((FeedArticle) null));
+        }
+
+        /// <summary>
+        /// Save given list of feeds to storage.
+        /// </summary>
+        /// <param name="feeds">Feeds for saving</param>
+        /// <param name="ctx">Saving operation cancelation token</param>
+        /// <returns>Saved keys</returns>
+        public Task SaveFeedArticleAsync(FeedArticle article, CancellationToken ctx)
+        {
+            return SaveObjectAsync(article, ArticleId2Key, ctx);
         }
     }
 }

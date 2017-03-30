@@ -1,12 +1,23 @@
 ﻿namespace Mobile_RSS_Reader.Data.Models
-{
+{   
+    /// <summary>
+    /// Model of feed's article.
+    /// </summary>
     public class FeedArticle : BaseModel
     {   
-        private readonly string Article;
+        /// <summary>
+        /// Simplified content of article
+        /// </summary>
+        public readonly string Article;
 
-        public FeedArticle(string id) : base(id)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id"> Article id.</param>
+        /// <param name="article">Article content.</param>
+        public FeedArticle(string id, string article) : base(id)
         {
-            // Nothing to do.
+            Article = article;
         }
     }
 }

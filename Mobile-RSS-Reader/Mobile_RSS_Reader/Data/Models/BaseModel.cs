@@ -1,10 +1,10 @@
 ﻿namespace Mobile_RSS_Reader.Data.Models
-{   
+{
     /// <summary>
     /// Base storage model.
     /// </summary>
     public class BaseModel
-    {   
+    {
         /// <summary>
         /// Model id.
         /// </summary>

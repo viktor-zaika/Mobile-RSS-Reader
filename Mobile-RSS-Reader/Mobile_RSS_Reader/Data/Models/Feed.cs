@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Mobile_RSS_Reader.Data.Models
 {   
