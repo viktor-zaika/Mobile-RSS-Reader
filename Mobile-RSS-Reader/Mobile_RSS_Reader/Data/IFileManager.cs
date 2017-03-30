@@ -1,35 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace Mobile_RSS_Reader.Data
 {
+    /// <summary>
+    /// Describes requirement to planform depended file manager
+    /// </summary>
     public interface ILocalFileManager
     {
+        /// <summary>
+        /// Provides file by given name.
+        /// </summary>
+        /// <param name="fileName">File name</param>
+        /// <returns>Local file</returns>
         ILocalFile GetLocalFile(string fileName);
-
-        Task<IEnumerable<ILocalSearchedFile>> GetAllLocalFilesAsync();
     }
 
+    /// <summary>
+    /// Describes requirements to local file
+    /// </summary>
     public interface ILocalFile
     {
+        /// <summary>
+        /// Full file name
+        /// </summary>
         string FullFileName { get; }
-
-        Task DeleteAsync();
-
-        Task<bool> DoesExistAsync();
-
-        void DisableCloudBackup();
-    }
-
-    public interface ILocalSearchedFile
-    {
-        string FileNameOnly { get; }
-
-        Task<DateTime> GetLastModifiedUtcAsync();
-
-        Task DeleteAsync();
     }
 }

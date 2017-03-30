@@ -1,32 +1,33 @@
+﻿using System;
 using System.IO;
 using Mobile_RSS_Reader.Data;
-using Mobile_RSS_Reader.Droid;
-using Environment = System.Environment;
+using Mobile_RSS_Reader.iOS;
 
-[assembly: Xamarin.Forms.Dependency(typeof(FileManager))]
+[assembly: Xamarin.Forms.Dependency(typeof(LocalFileManager))]
 
-namespace Mobile_RSS_Reader.Droid
-{   
+namespace Mobile_RSS_Reader.iOS
+{
     /// <summary>
-    /// Simple file manager implementation
+    /// Ios local file manager implementation.
     /// </summary>
-    public class FileManager : ILocalFileManager
-    {   
+    public class LocalFileManager : ILocalFileManager
+    {
         /// <summary>
-        /// Local directory
+        /// Local files directory.
         /// </summary>
         private readonly string _localFileDirectory;
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
-        public FileManager()
+        public LocalFileManager()
         {
-            _localFileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal); // Documents folder
+            _localFileDirectory = Path.Combine(documentsPath, "..", "Library"); // Library folder
         }
 
         /// <summary>
-        /// Provides local file by name.
+        /// Privides local file by file name.
         /// </summary>
         /// <param name="fileName">File name</param>
         /// <returns>Local file</returns>
@@ -36,26 +37,24 @@ namespace Mobile_RSS_Reader.Droid
         }
 
         /// <summary>
-        /// Simple implementation of local file.
+        /// Ios local file.
         /// </summary>
         private class LocalFile : ILocalFile
         {
-
             /// <summary>
-            /// Containe full file name
+            /// Full file name
             /// </summary>
             public string FullFileName { get; }
 
             /// <summary>
-            /// Local file implementation.
+            /// Constructor
             /// </summary>
-            /// <param name="directory">File directory.</param>
-            /// <param name="fileName">File name.</param>
+            /// <param name="directory">Directory</param>
+            /// <param name="fileName">File name</param>
             public LocalFile(string directory, string fileName)
             {
                 FullFileName = Path.Combine(directory, fileName);
             }
-
         }
     }
 }
