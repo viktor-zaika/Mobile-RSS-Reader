@@ -10,7 +10,7 @@ namespace Mobile_RSS_Reader.Parsers
     /// <summary>
     /// Represent feed parser which provided in rss format.
     /// </summary>
-    public class RssParser : FeedParser
+    public class RssParser : IFeedParser
     {   
         /// <summary>
         /// Html to plain text converter
