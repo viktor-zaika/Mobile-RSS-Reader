@@ -1,14 +1,28 @@
-﻿using System;
+﻿using Mobile_RSS_Reader.Data.Models;
+using Xamarin.Forms;
 
 namespace Mobile_RSS_Reader.UI.ViewModels
-{
+{   
+    /// <summary>
+    /// Feed details view model
+    /// </summary>
     public class FeedDetailsViewModel : BaseViewModel
-    {
-        public string Article { get; }
+    {   
+        /// <summary>
+        /// Article content.
+        /// </summary>
+        public HtmlWebViewSource Article { get; }
 
-        public FeedDetailsViewModel(string article)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="article">Full feed article instance.</param>
+        public FeedDetailsViewModel(FeedArticle article)
         {
-            Article = article;
+            Article = new HtmlWebViewSource
+            {
+                Html = article.Article
+            }; 
         }
     }
 }

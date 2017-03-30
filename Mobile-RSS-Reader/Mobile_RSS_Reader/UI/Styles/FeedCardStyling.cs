@@ -1,7 +1,10 @@
 ﻿using Xamarin.Forms;
 
 namespace Mobile_RSS_Reader.UI.Styles
-{
+{   
+    /// <summary>
+    /// Represent feed card styling
+    /// </summary>
     public static class FeedCardStyling
     {
         static FeedCardStyling()

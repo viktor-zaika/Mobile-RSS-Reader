@@ -2,8 +2,14 @@
 
 namespace Mobile_RSS_Reader.UI.Controls
 {
-   public class CardView : Frame
+    /// <summary>
+    /// Represent simple cardview control implementation.
+    /// </summary>
+    public class CardView : Frame
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public CardView()
         {
             Padding = 0;

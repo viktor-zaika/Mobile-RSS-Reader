@@ -2,32 +2,57 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Mobile_RSS_Reader.UI.Controls;assembly=Mobile_RSS_Reader"
+             xmlns:converters="clr-namespace:Mobile_RSS_Reader.UI.Converters;assembly=Mobile_RSS_Reader"
              x:Class="Mobile_RSS_Reader.UI.Views.HomePage"
-             Title="ListView">
-  <ListView ItemsSource="{Binding Feeds}"
-            ItemTapped="Handle_ItemTapped"
-            ItemSelected="Handle_ItemSelected"
-            HasUnevenRows="true"
-            IsPullToRefreshEnabled="true"
-            IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-            RefreshCommand="{Binding RefreshDataCommand}"
-            SeparatorVisibility="None">
+             Title="Feeds">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:NegateBooleanConverter x:Key="NegateBooleanConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <RelativeLayout>
+        <ListView ItemsSource="{Binding Feeds}"
+                  ItemTapped="Handle_ItemTapped"
+                  ItemSelected="Handle_ItemSelected"
+                  HasUnevenRows="true"
+                  IsPullToRefreshEnabled="true"
+                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                  RefreshCommand="{Binding RefreshDataCommand}"
+                  SeparatorVisibility="None"
+                  RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
+            Property=Y,Factor=1,Constant=0}"
+                  RelativeLayout.WidthConstraint="{ConstraintExpression
+            Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+                  RelativeLayout.HeightConstraint="{ConstraintExpression
+            Type=RelativeToParent,Property=Height,Factor=1,Constant=0}">
 
         <!--Custom View Cells-->
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <controls:CardView Margin="4,2,4,2" Padding="8">
-                        <StackLayout Spacing="0" Padding="0">
-                            <Label Text="{Binding Text}" Style="{StaticResource CardTitleStyle}" LineBreakMode="WordWrap"/>
-                            <Label Text="{Binding Detail}" Style="{StaticResource CardDetailTextStyle}" />
-                            <Label Text="{Binding Date}" HorizontalTextAlignment="End" Style="{StaticResource CardDateTextStyle}"/>
-                        </StackLayout>
-                    </controls:CardView>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <controls:CardView Margin="4,2,4,2" Padding="8">
+                            <StackLayout Spacing="0" Padding="0">
+                                <Label Text="{Binding Text}" Style="{StaticResource CardTitleStyle}" LineBreakMode="WordWrap"/>
+                                <Label Text="{Binding Detail}" Style="{StaticResource CardDetailTextStyle}" />
+                                <Label Text="{Binding Date}" HorizontalTextAlignment="End" Style="{StaticResource CardDateTextStyle}"/>
+                            </StackLayout>
+                        </controls:CardView>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ActivityIndicator IsRunning="{Binding IsActionExecuting}"
+                           IsVisible="{Binding IsActionExecuting}"
+                           Color="Blue"
+                           VerticalOptions="CenterAndExpand"
+                           HorizontalOptions="CenterAndExpand"
+                           RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
+            Property=Y,Factor=1,Constant=0}"
+                           RelativeLayout.WidthConstraint="{ConstraintExpression
+            Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+                           RelativeLayout.HeightConstraint="{ConstraintExpression
+            Type=RelativeToParent,Property=Height,Factor=1,Constant=0}" />
+    </RelativeLayout>
 </ContentPage>
 
 
